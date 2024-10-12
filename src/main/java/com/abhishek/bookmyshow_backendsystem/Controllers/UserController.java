@@ -1,7 +1,6 @@
 package com.abhishek.bookmyshow_backendsystem.Controllers;
 
-import com.abhishek.bookmyshow_backendsystem.Dtos.SignUpRequestDto;
-import com.abhishek.bookmyshow_backendsystem.Dtos.SignUpResponseDto;
+import com.abhishek.bookmyshow_backendsystem.Dtos.*;
 import com.abhishek.bookmyshow_backendsystem.Models.User;
 import com.abhishek.bookmyshow_backendsystem.Services.UserService;
 import org.springframework.stereotype.Controller;
@@ -36,5 +35,19 @@ public class UserController {
         signUpResponseDto.setEmail(savedUser.getEmail());
 
         return signUpResponseDto;
+    }
+
+    // http://localhost:8080/users/login
+    @PostMapping("/login")
+    public LogInResponseDto loginUser(@RequestBody LoginRequestDto loginRequestDto)
+    {
+        User user = new User();
+        user.setEmail(loginRequestDto.getEmail());
+        user.setPassword(loginRequestDto.getPassword());
+        ResponseStatus responseStatus = userService.login(user);
+
+        LogInResponseDto logInResponseDto = new LogInResponseDto();
+        logInResponseDto.setResponseStatus(responseStatus);
+        return logInResponseDto;
     }
 }
